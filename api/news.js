@@ -1,7 +1,7 @@
 // Vercel serverless function to proxy Anthropic requests
 // Receives { prompt } in POST body and forwards to Anthropic using the API key in process.env.ANTHROPIC_API_KEY
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
