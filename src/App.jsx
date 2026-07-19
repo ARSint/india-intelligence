@@ -46,6 +46,7 @@ const PAGES = [
   {id:"china",    icon:"🇨🇳", label:"China"},
   {id:"msci",     icon:"🌍", label:"MSCI"},
   {id:"policy",   icon:"🏛️", label:"Policy"},
+  {id:"ministry", icon:"🧾", label:"Ministry"},
   {id:"trade",    icon:"🌐", label:"Trade"},
   {id:"economy",  icon:"🏦", label:"Economy"},
   {id:"table",    icon:"📋", label:"Table"},
@@ -60,7 +61,8 @@ const SECTION_PROMPTS = {
   global:  `Search for top 6 news about Trump/US policy impact on India today July 2026. Include US tariffs on India, trade deals, Fed Reserve decisions, Nasdaq/Dow moves, US-India relations, dollar-rupee. For each: title, summary, India impact.`,
   china:   `Search for top 6 news about China trade with India today July 2026. Include Chinese import restrictions on India, anti-dumping duties, Chinese FDI in India, India's restrictions on China, export relaxations, Chinese company approvals in India. For each: title, summary, trade impact.`,
   msci:    `Search for latest MSCI India index news July 2026. Include MSCI rebalancing, stocks added/removed from MSCI India, FII inflows/outflows, passive fund flows, index weight changes. Also include any Nifty/Sensex index reconstitution news. For each: title, summary, stocks affected, flow amounts.`,
-  policy:  `Search for top 6 Indian government ministry policy news today July 2026. Include RBI decisions, SEBI regulations, ministry announcements, budget updates, PLI schemes, tax changes. For each: title, summary, ministry/department, impact.`,
+  policy:  `Search for top 6 Indian government policy news today July 2026. Include RBI decisions, SEBI regulations, government announcements, budget updates, PLI schemes, tax changes, and regulatory reforms. For each: title, summary, ministry/department, impact.`,
+  ministry: `Search for top 6 Indian ministry news today July 2026. Include minister statements, cabinet decisions, ministry directives, policy changes, and regulatory announcements from the finance ministry, commerce ministry, corporate affairs ministry, and other central departments. For each: title, summary, ministry/department, impact.`,
   trade:   `Search for top 6 India trade and export/import news today July 2026. Include trade deficit data, export figures, import duties changed, FTA developments, bilateral trade deals, WTO. For each: title, summary, trade impact.`,
   economy: `Search for top 6 Indian macroeconomic news today July 2026. Include GDP data, inflation (CPI/WPI), industrial production, PMI data, fiscal deficit, RBI policy, foreign exchange reserves. For each: title, summary, economic indicator value.`,
 };
@@ -68,7 +70,7 @@ const SECTION_PROMPTS = {
 const SECTION_COLORS = {
   market:"#6366f1", stocks:"#10b981", mf:"#f472b6", broker:"#fb923c",
   orders:"#2dd4bf", global:"#ef4444", china:"#fbbf24", msci:"#a855f7",
-  policy:"#d97706", trade:"#ea580c", economy:"#8b5cf6",
+  policy:"#d97706", ministry:"#c2410c", trade:"#ea580c", economy:"#8b5cf6",
 };
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────

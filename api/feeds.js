@@ -25,7 +25,8 @@ const SECTION_KEYWORDS = {
   global: ['trump','us','fed','dollar','nasdaq','dow','america','united states','global markets','international'],
   china: ['china','chinese','beijing','xi jinping','trade with china','tariff','export to china','chinese import','chinese export','china trade'],
   msci: ['msci','msci india','index rebalanc','index inclusion','index reconstitution','index committee','passive fund','benchmark index','index weight'],
-  policy: ['minister','ministry','cabinet','government','govt','rbi','sebi','policy','regulation','tax','budget','finance minister','commerce minister','union minister','economic affairs','ministry of finance','ministry of commerce','ministry of corporate affairs'],
+  policy: ['policy','regulation','tax','budget','regulatory reform','scheme','subsidy','policy change','notification','circular','guidelines'],
+  ministry: ['minister','ministry','cabinet','government','govt','finance minister','commerce minister','corporate affairs minister','home minister','defence minister','external affairs minister','minister said','minister announced','cabinet decision','cabinet approval','ministry of finance','ministry of commerce','ministry of corporate affairs','ministry of defence','ministry of external affairs','ministry of home affairs'],
   trade: ['export','import','trade','fta','tariff','trade deficit','exports','imports','customs','trade deal','export duty'],
   economy: ['gdp','inflation','cpi','wpi','industrial production','pmi','economic','fiscal','growth rate','rbi repo','fiscal deficit']
 };
