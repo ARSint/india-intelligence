@@ -8,10 +8,11 @@ const normalize = s => (s||"").replace(/<!\[CDATA\[|\]\]>/g, "").trim();
 
 const DEFAULT_FEED_URLS = [
   "https://www.reuters.com/places/india/rss",
-  "https://feeds.bbci.co.uk/news/world/asia/rss.xml",
-  "https://www.livemint.com/rss/homepage",
   "https://economictimes.indiatimes.com/markets/daily-market-report/rssfeeds/1977021503.cms",
-  "https://www.moneycontrol.com/rss/MCtopnews.xml"
+  "https://www.livemint.com/rss/homepage",
+  "https://www.business-standard.com/rss/news-116.rss",
+  "https://www.moneycontrol.com/rss/MCtopnews.xml",
+  "https://www.business-standard.com/rss/markets-704.rss"
 ];
 
 // Keyword mapping for app sections (tune as needed)
