@@ -1,11 +1,19 @@
-// Vercel serverless function to aggregate RSS/Atom feeds specified in FEED_URLS env var
-// FEED_URLS should be a comma-separated list of full feed URLs
+// Vercel serverless function to aggregate RSS/Atom feeds from a built-in default list.
 // Adds: simple in-memory cache (5 min) and server-side keyword mapping into known sections
 
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 let cache = { ts: 0, items: [] };
 
 const normalize = s => (s||"").replace(/<!\[CDATA\[|\]\]>/g, "").trim();
+
+const DEFAULT_FEED_URLS = [
+  "https://www.reuters.com/places/india/rss",
+  "https://economictimes.indiatimes.com/markets/daily-market-report/rssfeeds/1977021503.cms",
+  "https://www.livemint.com/rss/homepage",
+  "https://www.business-standard.com/rss/news-116.rss",
+  "https://www.moneycontrol.com/rss/MCtopnews.xml",
+  "https://www.business-standard.com/rss/markets-704.rss"
+];
 
 // Keyword mapping for app sections (tune as needed)
 const SECTION_KEYWORDS = {
@@ -28,11 +36,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const feedEnv = process.env.FEED_URLS;
-  if (!feedEnv) return res.status(500).json({ error: "Server misconfigured: FEED_URLS not set" });
-
-  const urls = feedEnv.split(',').map(u => u.trim()).filter(Boolean);
-  if (urls.length === 0) return res.status(500).json({ error: "FEED_URLS empty" });
+  const urls = DEFAULT_FEED_URLS;
 
   try {
     // Return cached result when fresh
