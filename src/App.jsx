@@ -86,31 +86,30 @@ Format each item as:
 
 Return 6-8 items. Make sure all data is real and from today or very recent (July 2026).`;
 
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
+  // Use the RSS aggregator endpoint to fetch real feed items for this section
+  const response = await fetch("/api/feeds", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-haiku-4-5",
-      max_tokens: 2000,
-      tools: [{ type: "web_search_20250305", name: "web_search" }],
-      messages: [{ role: "user", content: fullPrompt }]
-    })
+    body: JSON.stringify({ section: key })
   });
 
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error?.message || `API error ${response.status}`);
+  if (!response.ok) {
+    const err = await response.json().catch(()=>({ error: 'unknown' }));
+    throw new Error(err.error || `Feeds API error ${response.status}`);
+  }
 
-  const text = data.content?.filter(b => b.type === "text").map(b => b.text).join("") || "";
-  const match = text.match(/\[[\s\S]*\]/);
-  if (!match) throw new Error("No JSON array in response");
-
-  const items = JSON.parse(match[0]);
+  const items = await response.json();
+  // Map feed items into the expected shape
   return items.map(item => ({
-    ...item,
-    sentiment: item.sentiment || getSentiment(item.title + " " + (item.summary||"")),
-    sectors: item.sectors || getSectors(item.title + " " + (item.summary||"")).map(s => s.name),
-    source: "AI Search",
-    pubDate: new Date().toISOString(),
+    title: item.title,
+    summary: item.description || '',
+    sentiment: getSentiment(item.title + ' ' + (item.description||'')),
+    sectors: getSectors(item.title + ' ' + (item.description||'')).map(s => s.name),
+    ticker: '',
+    extra: '',
+    source: item.source || 'feed',
+    pubDate: item.pubDate || new Date().toISOString(),
+    link: item.link || ''
   }));
 };
 
@@ -161,21 +160,39 @@ export default function App() {
   }, []);
 
   const fetchAll = useCallback(async () => {
-    setProgress(["🚀 Starting fetch..."]);
+    setProgress(["🚀 Aggregating RSS feeds..."]);
     setFetchDone(false);
     setData({});
-    const keys = Object.keys(SECTION_PROMPTS);
-    // Run 2 sections in parallel per batch — halves total time vs sequential
-    // 1.5s gap between batches stays safely under rate limits
-    for (let i = 0; i < keys.length; i += 2) {
-      const batch = keys.slice(i, i + 2);
-      await Promise.all(batch.map(key => fetchOne(key)));
-      if (i + 2 < keys.length) await new Promise(r => setTimeout(r, 1500));
+    try {
+      const resp = await fetch('/api/feeds', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+      if (!resp.ok) {
+        const err = await resp.json().catch(()=>({ error: 'unknown' }));
+        throw new Error(err.error || `Feeds API error ${resp.status}`);
+      }
+      const items = await resp.json();
+      // Attach sentiment and sectors on the client using existing helpers
+      const enhanced = items.map(it => ({
+        title: it.title,
+        summary: it.description || '',
+        link: it.link,
+        pubDate: it.pubDate,
+        sentiment: getSentiment(it.title + ' ' + (it.description||'')),
+        sectors: getSectors(it.title + ' ' + (it.description||'')).map(s => s.name),
+        source: it.source || 'feed'
+      }));
+
+      const keys = Object.keys(SECTION_PROMPTS);
+      // Populate each section with items that the server labeled for that section
+      const d = {};
+      keys.forEach(k => d[k] = enhanced.filter(it => (it.sections||[]).includes(k)));
+      setData(d);
+      setFetchDone(true);
+      setLastUpdated(new Date());
+      log(`✅ Feeds loaded: ${enhanced.length} items`);
+    } catch (e) {
+      log(`✗ Feeds: ${e.message}`);
     }
-    setFetchDone(true);
-    setLastUpdated(new Date());
-    log("✅ All done!");
-  }, [fetchOne]);
+  }, []);
 
   useEffect(() => {
     if (!hasFetched.current) { hasFetched.current = true; fetchAll(); }
