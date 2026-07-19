@@ -28,8 +28,8 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const feedEnv = process.env.FEED_URLS;
-  if (!feedEnv) return res.status(500).json({ error: "Server misconfigured: FEED_URLS not set" });
+  const feedEnv = process.env.FEED_URLS || process.env.feed_urls;
+  if (!feedEnv) return res.status(500).json({ error: "Server misconfigured: FEED_URLS or feed_urls not set" });
 
   const urls = feedEnv.split(',').map(u => u.trim()).filter(Boolean);
   if (urls.length === 0) return res.status(500).json({ error: "FEED_URLS empty" });
