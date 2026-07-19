@@ -7,6 +7,14 @@ let cache = { ts: 0, items: [] };
 
 const normalize = s => (s||"").replace(/<!\[CDATA\[|\]\]>/g, "").trim();
 
+const DEFAULT_FEED_URLS = [
+  "https://www.reuters.com/places/india/rss",
+  "https://feeds.bbci.co.uk/news/world/asia/rss.xml",
+  "https://www.livemint.com/rss/homepage",
+  "https://economictimes.indiatimes.com/markets/daily-market-report/rssfeeds/1977021503.cms",
+  "https://www.moneycontrol.com/rss/MCtopnews.xml"
+];
+
 // Keyword mapping for app sections (tune as needed)
 const SECTION_KEYWORDS = {
   market: ['sensex','nifty','market','fii','dii','index','brokers','bse','nse'],
@@ -29,10 +37,8 @@ module.exports = async (req, res) => {
   }
 
   const feedEnv = process.env.FEED_URLS || process.env.feed_urls;
-  if (!feedEnv) return res.status(500).json({ error: "Server misconfigured: FEED_URLS or feed_urls not set" });
-
-  const urls = feedEnv.split(',').map(u => u.trim()).filter(Boolean);
-  if (urls.length === 0) return res.status(500).json({ error: "FEED_URLS empty" });
+  const urls = (feedEnv ? feedEnv.split(',').map(u => u.trim()).filter(Boolean) : DEFAULT_FEED_URLS).filter(Boolean);
+  if (urls.length === 0) return res.status(500).json({ error: "No feed URLs available" });
 
   try {
     // Return cached result when fresh
