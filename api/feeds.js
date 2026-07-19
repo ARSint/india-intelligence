@@ -1,5 +1,4 @@
-// Vercel serverless function to aggregate RSS/Atom feeds specified in FEED_URLS env var
-// FEED_URLS should be a comma-separated list of full feed URLs
+// Vercel serverless function to aggregate RSS/Atom feeds from a built-in default list.
 // Adds: simple in-memory cache (5 min) and server-side keyword mapping into known sections
 
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
@@ -36,9 +35,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const feedEnv = process.env.FEED_URLS || process.env.feed_urls;
-  const urls = (feedEnv ? feedEnv.split(',').map(u => u.trim()).filter(Boolean) : DEFAULT_FEED_URLS).filter(Boolean);
-  if (urls.length === 0) return res.status(500).json({ error: "No feed URLs available" });
+  const urls = DEFAULT_FEED_URLS;
 
   try {
     // Return cached result when fresh
