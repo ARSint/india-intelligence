@@ -17,17 +17,17 @@ const DEFAULT_FEED_URLS = [
 
 // Keyword mapping for app sections (tune as needed)
 const SECTION_KEYWORDS = {
-  market: ['sensex','nifty','market','fii','dii','index','brokers','bse','nse'],
-  stocks: ['earnings','q1','q2','quarter','results','shares','stock','shares','ipo','ticker','upgrade','downgrade'],
-  mf: ['mutual fund','sip','amfi','aum','asset under management','fund house','mf'],
-  broker: ['broker','research','motilal','kotak','icici securities','jefferies','target price','rating','analyst'],
-  orders: ['order','contract','order win','contract award','order worth','won a contract','order win'],
-  global: ['trump','us','fed','dollar','nasdaq','dow','america','united states'],
-  china: ['china','chinese','beijing','xi jinping','trade with china','tariff','export to china'],
-  msci: ['msci','rebalancing','msci india','index rebalan'],
-  policy: ['rbi','sebi','policy','ministry','regulation','tax','budget','government'],
-  trade: ['export','import','trade','fta','tariff','trade deficit','exports','imports'],
-  economy: ['gdp','inflation','cpi','wpi','industrial production','pmi','economic','fiscal']
+  market: ['sensex','nifty','market','fii','dii','index','brokers','bse','nse','india market','india equity','india stocks','domestic market'],
+  stocks: ['earnings','q1','q2','quarter','results','shares','stock','ipo','ticker','upgrade','downgrade','blockquote','brokerage','market cap','share price','stock rally'],
+  mf: ['mutual fund','sip','amfi','aum','asset under management','fund house','mf','fund flows'],
+  broker: ['broker','research','motilal','kotak','icici securities','jefferies','target price','rating','analyst','brokerage','call'],
+  orders: ['order','contract','order win','contract award','order worth','won a contract','order win','contract win','project award'],
+  global: ['trump','us','fed','dollar','nasdaq','dow','america','united states','global markets','international'],
+  china: ['china','chinese','beijing','xi jinping','trade with china','tariff','export to china','chinese import','chinese export','china trade'],
+  msci: ['msci','msci india','index rebalanc','index inclusion','index reconstitution','index committee','passive fund','benchmark index','index weight'],
+  policy: ['minister','ministry','cabinet','government','govt','rbi','sebi','policy','regulation','tax','budget','finance minister','commerce minister','union minister','economic affairs','ministry of finance','ministry of commerce','ministry of corporate affairs'],
+  trade: ['export','import','trade','fta','tariff','trade deficit','exports','imports','customs','trade deal','export duty'],
+  economy: ['gdp','inflation','cpi','wpi','industrial production','pmi','economic','fiscal','growth rate','rbi repo','fiscal deficit']
 };
 
 export default async function handler(req, res) {
